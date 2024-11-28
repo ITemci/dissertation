@@ -11,4 +11,4 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def index(request):
-    HttpResponse("hello")
+    return render(request, 'rest_mng/index.html')
