@@ -6,13 +6,70 @@
         <title>{% block title %}Rest. Manage{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'rest_mng/styles.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         {% block script %}
         {% endblock %}
     </head>
     <body>
+        <!-- Navigation bar -->
+        <nav class="nav">
+            <!-- Hamburger button -->
+            <button class="hamburger-btn">
+                ☰
+            </button>
+
+            <ul id="nav_list">
+                <li class="list_item">
+                    <a class="list_link" href="#">Home </a>
+                </li>
+                <li class="list_item">
+                    <a class="list_link" href="#">Menu </a>
+                </li>
+                <li class="list_item">
+                    <a class="list_link" href="#">Contact us </a>
+                </li>
+                <li class="list_item dropdown">
+                    <a class='list_link' href="#">Categories</a>
+                    <ul class="dropdown-menu">
+                        <li><a class='list_link' href="#">Web Design</a></li>
+                        <li><a class='list_link' href="#">SEO</a></li>
+                        <li><a class='list_link' href="#">Marketing</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="search-bar">
+                <form class="d-flex" role="search" style="margin:0px; padding:0px;">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="margin-right:7px; margin-top:2px">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
         <div class="container">
-            {% block body %}
-            {% endblock %}
+
         </div>
+
+    <script>
+        // Navbar dropdown toggle on hover
+        document.querySelector('.dropdown').addEventListener('mouseover', () => {
+            document.querySelector('.dropdown-menu').style.display = 'block';
+        });
+        document.querySelector('.dropdown').addEventListener('mouseout', () => {
+            document.querySelector('.dropdown-menu').style.display = 'none';
+        });
+
+        // Hamburger menu functionality
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        const navList = document.getElementById('nav_list');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navList.classList.toggle('show');
+        });
+    </script>
+
+
+    {% block body %} {% endblock %}
     </body>
 </html>

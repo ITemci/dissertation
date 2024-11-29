@@ -1,5 +1,130 @@
-#content{
-    width: 200px;
+/* Resetting the standard presents */
+body, ul, li, a, input {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#best_sellers {
+    width: 100%;
     height: 200px;
     background-color: grey;
+}
+
+#categories{
+    width: 100%;
+    height: 400px;
+    background-color: red;
+}
+
+/* Navigation Bar Styles */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+#nav_list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    transition: max-height 0.3s ease;
+}
+
+.list_item {
+    display: flex;
+}
+
+.list_link {
+    text-decoration: none;
+    color: #bfbfbf;
+    padding: 10px 15px;
+    margin-bottom: 0px;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.list_link:hover {
+    color: grey;
+    text-decoration: none;
+}
+
+.list_item:hover {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.search-bar input {
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #888;
+}
+
+.dropdown-menu {
+    display: none;
+    margin-top: 0px;
+}
+
+.droptown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Hamburger Menu Styles */
+.hamburger-btn {
+    display: none;
+    background-color: #333;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left:auto;
+    margin-right: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .hamburger-btn {
+        display: block;
+
+    }
+
+    #nav_list {
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        background-color: #333;
+        width: 100%;
+        text-align: center;
+    }
+
+    #nav_list.show {
+        max-height: 300px; /* Adjust this value based on your content */
+    }
+
+    .list_item {
+        width: 100%;
+
+    }
+
+    .list_link{
+        margin-left:auto;
+        margin-right: 20px;
+    }
+
+    .search-bar {
+        margin-top: 30px;
+        width: 80vh;
+    }
 }
