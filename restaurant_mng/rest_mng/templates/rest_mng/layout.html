@@ -35,8 +35,16 @@
                         <li><a class='list_link' href="#">Web Design</a></li>
                         <li><a class='list_link' href="#">SEO</a></li>
                         <li><a class='list_link' href="#">Marketing</a></li>
+
                     </ul>
                 </li>
+                {% if user.is_authenticated %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">New Listing</a>
+                            </li>
+
+                        {% endif %}
             </ul>
 
             <div class="search-bar">
@@ -45,6 +53,7 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
         </nav>
 
         <div class="container">
