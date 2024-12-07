@@ -3,15 +3,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import JsonResponse
-from django.shortcuts import HttpResponse, HttpResponseRedirect, render
+from django.shortcuts import HttpResponse, HttpResponseRedirect, render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User
+from .models import User,Product
 
 # Create your views here.
 def index(request):
-    return render(request, 'rest_mng/index.html')
+    products = Product.objects.all()
+    return render(request, 'rest_mng/index.html',{
+        'products':products
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -24,8 +27,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            #return HttpResponseRedirect(reverse("index"))
-            return render(request, 'rest_mng/index.html')
+            return redirect('index')
         else:
             return render(request, "rest_mng/login.html", {
                 "message": "Invalid username and/or password."
@@ -36,7 +38,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return redirect('index')
 
 
 def register(request):
@@ -64,3 +66,24 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "rest_mng/register.html")
+
+def new_product(request):
+        if request.method == "POST":
+            title = request.POST['prod_name']
+            description = request.POST['prod_desc']
+            price = request.POST['price']
+            category = request.POST['category']
+            image = request.FILES.get('image')
+
+            # Save the product
+            product = Product(
+                prod_name=title,
+                prod_desc=description,
+                price=price,
+                category=category,
+                image=image
+            )
+            product.save()
+            return redirect('index')
+
+        return render(request, 'index.html')

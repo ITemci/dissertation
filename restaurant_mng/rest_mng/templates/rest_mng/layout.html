@@ -21,7 +21,7 @@
 
             <ul id="nav_list">
                 <li class="list_item">
-                    <a class="list_link" href="#">Home </a>
+                    <a class="list_link" href="{% url 'index' %}">Home </a>
                 </li>
                 <li class="list_item">
                     <a class="list_link" href="#">Menu </a>
@@ -32,16 +32,16 @@
                 <li class="list_item dropdown">
                     <a class='list_link' href="#">Categories</a>
                     <ul class="dropdown-menu">
-                        <li><a class='list_link' href="#">Web Design</a></li>
-                        <li><a class='list_link' href="#">SEO</a></li>
-                        <li><a class='list_link' href="#">Marketing</a></li>
+                        <li><a class='list_link' href="#">Soft Drinks</a></li>
+                        <li><a class='list_link' href="#">Alcohol Drinks</a></li>
+                        <li><a class='list_link' href="#">Food</a></li>
 
                     </ul>
                 </li>
                 {% if user.is_authenticated %}
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">New Listing</a>
+                                <a class="list-link" href="#">New Listing</a>
                             </li>
 
                         {% endif %}
@@ -53,7 +53,14 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
-            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+
+            {% if not user.is_authenticated %}
+            <a class="list_link" href="{% url 'login' %}">Log In</a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <a class="list_link" href="{% url 'logout' %}">Log Out</a>
+            {% endif %}
         </nav>
 
         <div class="container">

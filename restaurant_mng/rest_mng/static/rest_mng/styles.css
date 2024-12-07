@@ -66,6 +66,11 @@ body, ul, li, a, input {
     font-size: 14px;
 }
 
+.search-bar{
+    margin-right:10px;
+    margin-left:auto;
+}
+
 .search-bar input:focus {
     outline: none;
     border-color: #888;
@@ -127,4 +132,23 @@ body, ul, li, a, input {
         margin-top: 30px;
         width: 80vh;
     }
+}
+
+.product{
+    margin:10px;
+    width: 500px;
+    height: auto;
+    padding: 20px;
+    background-color: lightgrey;
+}
+
+.prod_img{
+    width: 40%;
+    height:auto;
+}
+
+#new_product{
+    background-color:lightgrey;
+    padding:20px;
+    margin:20px;
 }
