@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
 
 from .models import User,Product
 
@@ -61,6 +63,7 @@ def register(request):
         except IntegrityError:
             return render(request, "rest_mng/register.html", {
                 "message": "Username already taken."
+
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
@@ -87,3 +90,19 @@ def new_product(request):
             return redirect('index')
 
         return render(request, 'index.html')
+
+
+# Admin dashboard with superuser only restriction
+def admin_dashboard(view_func):
+    def decorated_view_func(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            messages.error(request, "This page is only available for users with appropriate clearance level, "
+                                    "if you have this clearance please log in with your credentials then try again.")
+            return redirect('login')  # Redirect to the login page
+        return view_func(request, *args, **kwargs)
+    return decorated_view_func
+
+
+@admin_dashboard
+def dashboard(request):
+    return render(request, 'rest_mng/admin.html')

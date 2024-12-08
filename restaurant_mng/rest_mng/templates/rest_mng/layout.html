@@ -29,22 +29,6 @@
                 <li class="list_item">
                     <a class="list_link" href="#">Contact us </a>
                 </li>
-                <li class="list_item dropdown">
-                    <a class='list_link' href="#">Categories</a>
-                    <ul class="dropdown-menu">
-                        <li><a class='list_link' href="#">Soft Drinks</a></li>
-                        <li><a class='list_link' href="#">Alcohol Drinks</a></li>
-                        <li><a class='list_link' href="#">Food</a></li>
-
-                    </ul>
-                </li>
-                {% if user.is_authenticated %}
-
-                            <li class="nav-item">
-                                <a class="list-link" href="#">New Listing</a>
-                            </li>
-
-                        {% endif %}
             </ul>
 
             <div class="search-bar">
@@ -63,18 +47,10 @@
             {% endif %}
         </nav>
 
-        <div class="container">
 
-        </div>
 
     <script>
-        // Navbar dropdown toggle on hover
-        document.querySelector('.dropdown').addEventListener('mouseover', () => {
-            document.querySelector('.dropdown-menu').style.display = 'block';
-        });
-        document.querySelector('.dropdown').addEventListener('mouseout', () => {
-            document.querySelector('.dropdown-menu').style.display = 'none';
-        });
+
 
         // Hamburger menu functionality
         const hamburgerBtn = document.querySelector('.hamburger-btn');

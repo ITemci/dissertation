@@ -38,31 +38,7 @@
 </div>
 {% endfor %}
 
-<div id="new_product">
-    <form action="{% url 'new_product' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="prod_name">Product Name:</label><br>
-        <input type="text" id="prod_name" name="prod_name" maxlength="15" required><br><br>
 
-        <label for="prod_desc">Product Description:</label><br>
-        <textarea id="prod_desc" name="prod_desc" maxlength="255" required></textarea><br><br>
-
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01" max="999.99" required><br><br>
-
-        <label for="category">Category:</label>
-        <select id="category" name="category">
-            <option value="Soft Drink">Soft Drink</option>
-            <option value="Alcohol Drink">Alcohol Drink</option>
-            <option value="Food">Food</option>
-        </select><br><br>
-
-        <label for="image">Product Image:</label>
-        <input type="file" id="image" name="image" accept="image/*"><br><br>
-
-        <button type="submit">Submit</button>
-    </form>
-</div>
 
 {% endblock %}
 

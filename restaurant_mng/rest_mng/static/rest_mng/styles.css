@@ -5,6 +5,10 @@ body, ul, li, a, input {
     box-sizing: border-box;
 }
 
+h2{
+    text-align:center;
+}
+
 #best_sellers {
     width: 100%;
     height: 200px;
@@ -76,14 +80,7 @@ body, ul, li, a, input {
     border-color: #888;
 }
 
-.dropdown-menu {
-    display: none;
-    margin-top: 0px;
-}
 
-.droptown:hover .dropdown-menu {
-    display: block;
-}
 
 /* Hamburger Menu Styles */
 .hamburger-btn {
@@ -132,6 +129,8 @@ body, ul, li, a, input {
         margin-top: 30px;
         width: 80vh;
     }
+
+
 }
 
 .product{
@@ -152,3 +151,45 @@ body, ul, li, a, input {
     padding:20px;
     margin:20px;
 }
+
+#row_1, #row_2{
+    display:flex;
+    flex-direction: row;
+    width:90%;
+    background-color: green;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 10px;
+}
+
+#new_orders{
+    flex-grow:1;
+    background-color: white;
+    margin:5px;
+    height:300px;
+}
+
+#to_collect{
+    flex-grow:2;
+    background-color: white;
+    margin:5px;
+    height:300px;
+}
+
+#reservations{
+    flex-grow:2;
+    background-color: white;
+    margin:5px 5px;
+    height:auto;
+}
+
+#create_new{
+    flex-grow:1;
+    background-color: white;
+    margin:5px 5px;
+    height:auto;
+    padding: 10px;
+}
+
+
+
