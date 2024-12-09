@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-<div>
+        <div>
             {% if user.is_authenticated %}
                 Signed in as <strong>{{ user.username }}</strong>.
             {% else %}
@@ -10,14 +10,17 @@
             {% endif %}
         </div>
 
-   <div id="best_sellers"><h1>Best Sellers, scrollable or auto scroll</h1></div>
-
-{% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+   <div id="categories">  <h3> Categories </h3>
 
 
-<div id="categories"> Categories with big squares for each with image and heading, that takes to menu page to that category</div>
+   </div>
+
+
+   <div id="best_sellers"><h3>Best Sellers</h3></div>
+
+
+
+
 
 {% for product in products%}
 <div class="product">
@@ -37,8 +40,6 @@
 
 </div>
 {% endfor %}
-
-
 
 {% endblock %}
 

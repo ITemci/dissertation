@@ -23,12 +23,20 @@
                 <li class="list_item">
                     <a class="list_link" href="{% url 'index' %}">Home </a>
                 </li>
-                <li class="list_item">
-                    <a class="list_link" href="#">Menu </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="list_item">
+                    <a class="list_link" href="#">Favorites </a>
+                    </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="list_item">
+                    <a class="list_link" href="#">Order History </a>
+                    </li>
+                {% endif %}
                 <li class="list_item">
                     <a class="list_link" href="#">Contact us </a>
                 </li>
+
             </ul>
 
             <div class="search-bar">
