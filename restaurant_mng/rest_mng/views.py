@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
 from .models import User,Product, Reviews
@@ -131,3 +130,6 @@ def add_review(request):
 
             # Redirect to the index route
         return redirect('index')
+
+def checkout(request):
+    pass
