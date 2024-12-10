@@ -2,6 +2,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render, redirect
 from django.urls import reverse
@@ -9,13 +10,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
-from .models import User,Product
+from .models import User,Product, Reviews
 
 # Create your views here.
 def index(request):
     products = Product.objects.all()
+    reviews = Reviews.objects.order_by('-date')
     return render(request, 'rest_mng/index.html',{
-        'products':products
+        'products':products,
+        'reviews': reviews
     })
 
 def login_view(request):
@@ -106,3 +109,25 @@ def admin_dashboard(view_func):
 @admin_dashboard
 def dashboard(request):
     return render(request, 'rest_mng/admin.html')
+
+# Add Review
+def add_review(request):
+    if request.method == 'POST':
+        rating = int(request.POST.get('rating', 0))
+        comment = request.POST.get('comment', '')
+
+        review = Reviews(rating=rating, comment=comment, person = request.user)
+
+        try:
+            # Validate model instance
+            review.full_clean()  # Triggers validation
+            review.save()
+
+            # Add success message
+            messages.success(request, "Review added successfully!")
+        except ValidationError as e:
+            # Add error message
+            messages.error(request, f"Failed to add review: {e.message_dict}")
+
+            # Redirect to the index route
+        return redirect('index')
