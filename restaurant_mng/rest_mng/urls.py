@@ -12,5 +12,6 @@ urlpatterns = [
     path("dashboard", views.dashboard, name="dashboard"),
     path("add_review", views.add_review, name="add_review"),
     path("checkout", views.checkout, name="checkout"),
+    path("history", views.history, name="history"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

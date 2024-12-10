@@ -30,7 +30,7 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                     <li class="list_item">
-                    <a class="list_link" href="#">Order History </a>
+                    <a class="list_link" href="{% url 'history' %}">Order History </a>
                     </li>
                 {% endif %}
                 <li class="list_item">

@@ -8,8 +8,10 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect, render, redirec
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from decimal import Decimal
+from django.shortcuts import get_object_or_404
 
-from .models import User,Product, Reviews
+from .models import User,Product, Reviews,Sales, SalesItems
 
 # Create your views here.
 def index(request):
@@ -132,4 +134,38 @@ def add_review(request):
         return redirect('index')
 
 def checkout(request):
-    pass
+    if request.method == 'POST':
+        cart = json.loads(request.body)
+        user = request.user
+        total_price = sum(
+            Decimal(item['price']) * item['quantity']
+            for item in cart.values()
+        )
+
+        # Create a new Sale
+        sale = Sales.objects.create(user=user, total_price=total_price)
+
+        # Add items to the sale
+        for product_id, item in cart.items():
+            product = get_object_or_404(Product, id=product_id)
+            SalesItems.objects.create(
+                sale=sale,
+                product=product,
+                quantity=item['quantity'],
+                price=item['price']
+            )
+
+            # Optionally reduce stock
+            # product.stock -= item['quantity']
+            product.save()
+
+        return JsonResponse({'message': 'Checkout successful!'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def history(request):
+    sales = Sales.objects.order_by('-date')
+    items = SalesItems.objects.all()
+    return render(request, 'rest_mng/sales_history.html',{
+        'sales':sales,
+        'items': items
+    })
