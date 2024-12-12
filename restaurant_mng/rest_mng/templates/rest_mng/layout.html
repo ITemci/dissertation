@@ -71,5 +71,22 @@
 
 
     {% block body %} {% endblock %}
-    </body>
-</html>
+
+        {% if user.is_authenticated %}
+        <!-- Cart -->
+    <div id="cart_btn">Cart</div>
+    <div id="cart" >
+    <h2>Cart</h2>
+        <ul id="cart-items"></ul>
+
+        <button onclick="checkout()">Checkout</button>
+
+    </div>
+        {% endif %}
+
+<script src="static/rest_mng/cart_functionality.js"></script>
+<script src="static/rest_mng/cart_toggle.js"></script>
+
+
+        </body>
+    </html>

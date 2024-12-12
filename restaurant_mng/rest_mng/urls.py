@@ -13,5 +13,7 @@ urlpatterns = [
     path("add_review", views.add_review, name="add_review"),
     path("checkout", views.checkout, name="checkout"),
     path("history", views.history, name="history"),
+    path("add_favorite", views.add_favorite, name="add_favorite"),
+    path("remove_favorite", views.remove_favorite, name="remove_favorite"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

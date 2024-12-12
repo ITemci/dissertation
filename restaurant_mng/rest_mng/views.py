@@ -19,7 +19,7 @@ def index(request):
     reviews = Reviews.objects.order_by('-date')
     return render(request, 'rest_mng/index.html',{
         'products':products,
-        'reviews': reviews
+        'reviews': reviews,
     })
 
 def login_view(request):
@@ -169,3 +169,23 @@ def history(request):
         'sales':sales,
         'items': items
     })
+
+def add_favorite(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+        current_user = request.user
+
+        if current_user in product.favorite.all():
+            messages.warning(request, "You have already added this product to favorites.")
+        else:
+            product.favorite.add(current_user)
+            messages.success(request, "Product added to favorites!")
+
+        return redirect('index')
+    else:
+        messages.error(request, "Invalid request.")
+        return redirect('index')
+
+def remove_favorite(request):
+    pass

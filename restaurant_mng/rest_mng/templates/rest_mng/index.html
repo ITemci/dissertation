@@ -56,10 +56,12 @@
 <div class="product">
 
     <h4><strong>NAme: {{ product.prod_name }}</strong></h4>
+
     <p>Description: {{ product.prod_desc }}</p>
     <p>Category: {{ product.category }}</p>
     <h5>Price: £{{ product.price }}</h5>
     <p >Created on: {{ product.date }}</p>
+    <p>favorite: {{ product.favorite }}</p>
 
     {% if product.image %}
     <img src="{{ product.image.url }}" alt="Product Image" class="prod_img">
@@ -67,11 +69,27 @@
         <p>No image available</p>
     {% endif %}
 
+    {% if user.is_authenticated %}
     <form id="add_cart" >
     <label for="quantity_{{ product.id }}">Quantity:</label>
     <input type="number" id="quantity_{{ product.id }}" min="1" max="{{ product.stock }}" value="1">
     <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
 
+        {% if user in product.favorite.all %}
+            <form action="{% url 'remove_favorite' %}" method="post">
+                {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{product.id}}">
+            <input type="submit" value="Remove from favorites">
+            </form>
+        {% else %}
+            <br>
+            <form action="{% url 'add_favorite' %}" method="post">
+                {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{product.id}}">
+            <input type="submit" value="Add to favorites">
+            </form>
+        {% endif %}
+    {% endif %}
     </form>
 
 
@@ -80,79 +98,9 @@
 
 {% endfor %}
 
-<h2>Cart</h2>
-    <ul id="cart-items"></ul>
 
-    <button onclick="checkout()">Checkout</button>
 
-<script>
-        // Initialize cart if not already in sessionStorage
-        if (!sessionStorage.getItem('cart')) {
-            sessionStorage.setItem('cart', JSON.stringify({}));
-        }
 
-        // Add item to cart
-        function addToCart(productId, productName, productPrice) {
-            const quantity = parseInt(document.getElementById(`quantity_${productId}`).value, 10);
-
-            // Get the current cart
-            let cart = JSON.parse(sessionStorage.getItem('cart'));
-
-            // Update cart
-            if (cart[productId]) {
-                cart[productId].quantity += quantity; // Increment quantity
-            } else {
-                cart[productId] = {
-                    name: productName,
-                    price: productPrice,
-                    quantity: quantity
-                };
-            }
-
-            // Save updated cart to sessionStorage
-            sessionStorage.setItem('cart', JSON.stringify(cart));
-
-            // Update cart UI
-            updateCartUI();
-        }
-
-        // Display cart items
-        function updateCartUI() {
-            const cart = JSON.parse(sessionStorage.getItem('cart'));
-            const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';
-
-            for (const [productId, item] of Object.entries(cart)) {
-                const li = document.createElement('li');
-                li.textContent = `${item.name} - Quantity: ${item.quantity} - Total: £${(item.price * item.quantity).toFixed(2)}`;
-                cartItems.appendChild(li);
-            }
-        }
-
-        // Checkout: Send cart data to backend
-        function checkout() {
-            const cart = sessionStorage.getItem('cart');
-
-            fetch('checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: cart
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message || 'Checkout complete!');
-                sessionStorage.removeItem('cart'); // Clear cart after checkout
-                updateCartUI();
-            })
-            .catch(error => console.error('Error during checkout:', error));
-        }
-
-        // Update cart UI on page load
-        document.addEventListener('DOMContentLoaded', updateCartUI);
-    </script>
 
 {% endblock %}
 
