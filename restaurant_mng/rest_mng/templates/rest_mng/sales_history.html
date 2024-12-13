@@ -13,6 +13,9 @@
         <h5>Status: {{ sale.status }}</h5>
         <p >added on: {{ sale.date }}</p>
 
+        {% empty %}
+            <p>No Orders</p>
+
     </div>
     {% endfor %}
 

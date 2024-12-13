@@ -135,15 +135,21 @@ h2{
 
 .product{
     margin:10px;
-    width: 500px;
+    width: 90%;
     height: auto;
     padding: 20px;
     background-color: lightgrey;
 }
 
+.category{
+    background-color:white;
+    margin:10px;
+}
+
 .prod_img{
-    width: 40%;
-    height:auto;
+    width: 60px;
+    height:60px;
+    border-radius: 10px;
 }
 
 #new_product{
@@ -217,6 +223,17 @@ h2{
 
 #cart.show{
     display:block;
+}
+
+#add_cart input[type='number']{
+    width: 50px;
+    padding:5px;
+}
+
+#prod_heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 

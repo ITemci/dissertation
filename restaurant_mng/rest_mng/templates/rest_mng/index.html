@@ -23,7 +23,10 @@
 
    <div id="categories">  <h3> Categories </h3>
 
+    {% for category in products_by_category %}
+       <div class="category"><a href="#{{category}}">{{ category }}</a></div>
 
+   {% endfor %}
    </div>
 
 
@@ -52,51 +55,52 @@
 
 
 <h2>Menu</h2>
-{% for product in products%}
-<div class="product">
+{% for category, products in products_by_category.items %}
+    <h4 id="{{category}}">{{ category }}</h4>
+    <div class="category-products">
+        {% for product in products %}
+        <div class="product">
+            <div id="prod_heading">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="Product Image" class="prod_img">
+                {% else %}
+                <p>No image available</p>
+                {% endif %}
 
-    <h4><strong>NAme: {{ product.prod_name }}</strong></h4>
+                <strong style="margin-left: 10px;">{{ product.prod_name }}</strong>
+                <span> {{ product.prod_desc }}</span>
+                <h5>£{{ product.price }}</h5>
+            </div>
 
-    <p>Description: {{ product.prod_desc }}</p>
-    <p>Category: {{ product.category }}</p>
-    <h5>Price: £{{ product.price }}</h5>
-    <p >Created on: {{ product.date }}</p>
-    <p>favorite: {{ product.favorite }}</p>
+            <p>favorite: {{ product.favorite.count }}</p>
 
-    {% if product.image %}
-    <img src="{{ product.image.url }}" alt="Product Image" class="prod_img">
-    {% else %}
-        <p>No image available</p>
-    {% endif %}
+            {% if user.is_authenticated %}
+            <form id="add_cart">
+                <label for="quantity_{{ product.id }}">Quantity:</label>
+                <input type="number" id="quantity_{{ product.id }}" min="1" max="{{ product.stock }}" value="1">
+                <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
 
-    {% if user.is_authenticated %}
-    <form id="add_cart" >
-    <label for="quantity_{{ product.id }}">Quantity:</label>
-    <input type="number" id="quantity_{{ product.id }}" min="1" max="{{ product.stock }}" value="1">
-    <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
-
-        {% if user in product.favorite.all %}
-            <form action="{% url 'remove_favorite' %}" method="post">
-                {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{product.id}}">
-            <input type="submit" value="Remove from favorites">
+                {% if user in product.favorite.all %}
+                <form action="{% url 'remove_favorite' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="submit" value="Remove from favorites">
+                </form>
+                {% else %}
+                <br>
+                <form action="{% url 'add_favorite' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="submit" value="Add to favorites">
+                </form>
+                {% endif %}
             </form>
-        {% else %}
-            <br>
-            <form action="{% url 'add_favorite' %}" method="post">
-                {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{product.id}}">
-            <input type="submit" value="Add to favorites">
-            </form>
-        {% endif %}
-    {% endif %}
-    </form>
-
-
-</div>
-
-
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
 {% endfor %}
+
 
 
 

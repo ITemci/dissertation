@@ -16,9 +16,12 @@ from .models import User,Product, Reviews,Sales, SalesItems
 # Create your views here.
 def index(request):
     products = Product.objects.all()
+    categories = Product.objects.values_list('category', flat=True).distinct()
+    products_by_category = {category: Product.objects.filter(category=category) for category in categories}
+
     reviews = Reviews.objects.order_by('-date')
     return render(request, 'rest_mng/index.html',{
-        'products':products,
+        'products_by_category':products_by_category,
         'reviews': reviews,
     })
 
@@ -132,7 +135,7 @@ def add_review(request):
 
             # Redirect to the index route
         return redirect('index')
-
+@csrf_exempt
 def checkout(request):
     if request.method == 'POST':
         cart = json.loads(request.body)

@@ -31,14 +31,27 @@
 
         // Display cart items
         function updateCartUI() {
-            const cart = JSON.parse(sessionStorage.getItem('cart'));
+            const cart = JSON.parse(sessionStorage.getItem('cart')|| '{}');
             const cartItems = document.getElementById('cart-items');
+            const checkoutButton = document.getElementById('checkout-button');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+
             cartItems.innerHTML = '';
 
-            for (const [productId, item] of Object.entries(cart)) {
-                const li = document.createElement('li');
-                li.textContent = `${item.name} - Quantity: ${item.quantity} - Total: £${(item.price * item.quantity).toFixed(2)}`;
-                cartItems.appendChild(li);
+            if (Object.keys(cart).length === 0) {
+                // Cart is empty
+                checkoutButton.style.display = 'none'; // Hide checkout button
+                emptyCartMessage.style.display = 'block'; // Show "Cart is empty" message
+            } else {
+                // Cart has items
+                checkoutButton.style.display = 'block'; // Show checkout button
+                emptyCartMessage.style.display = 'none'; // Hide "Cart is empty" message
+
+                for (const [productId, item] of Object.entries(cart)) {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name} - Quantity: ${item.quantity} - Total: £${(item.price * item.quantity).toFixed(2)}`;
+                    cartItems.appendChild(li);
+                }
             }
         }
 
@@ -49,8 +62,8 @@
             fetch('checkout', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    'Content-Type': 'application/json'
+
                 },
                 body: cart
             })
