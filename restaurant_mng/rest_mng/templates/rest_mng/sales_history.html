@@ -5,21 +5,24 @@
 
 <h2>Order History</h2>
 
+<h4>Orders</h4>
     {% for sale in sales %}
     <div class="product">
         <p>Sale nr: {{ sale.id }}</p>
-        <h4><strong>Person: {{ sale.user }}</strong></h4>
         <p>Total price: {{sale.total_price}}</p>
         <h5>Status: {{ sale.status }}</h5>
         <p >added on: {{ sale.date }}</p>
 
-        {% empty %}
-            <p>No Orders</p>
+
 
     </div>
+
+    {% empty %}
+            <p>No Orders</p>
     {% endfor %}
 
     <p>--------------------------------</p>
+<h4>Individual Items</h4>
 
     {% for item in items %}
     <div class="product">

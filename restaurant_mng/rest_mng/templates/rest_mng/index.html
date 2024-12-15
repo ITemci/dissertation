@@ -24,7 +24,7 @@
    <div id="categories">  <h3> Categories </h3>
 
     {% for category in products_by_category %}
-       <div class="category"><a href="#{{category}}">{{ category }}</a></div>
+       <div class="category" onclick="goTo('{{category}}')"><p style="font-size: 30px; font-weight: 500; ">{{ category }}</p></div>
 
    {% endfor %}
    </div>
@@ -32,26 +32,7 @@
 
    <div id="best_sellers"><h3>Best Sellers</h3></div>
 
-    <h2>Reviews</h2>
 
-    <form id="review-form" method="post" action="{% url 'add_review' %}">
-        {% csrf_token %}
-    <label for="rating">Rating (1-10):</label>
-    <input type="number" id="rating" name="rating" min="1" max="10" required>
-    <textarea name="comment" placeholder="Your comment"></textarea>
-    <button type="submit">Submit Review</button>
-    </form>
-
-    {% for review in reviews %}
-    <div class="product">
-
-        <h4><strong>Person: {{ review.person }}</strong></h4>
-        <p>Comment: {{ review.comment }}</p>
-        <h5>Rating: {{ review.rating }}</h5>
-        <p >added on: {{ review.date }}</p>
-
-    </div>
-    {% endfor %}
 
 
 <h2>Menu</h2>
@@ -102,12 +83,41 @@
 {% endfor %}
 
 
+<h2>Reviews</h2>
 
+    <form id="review-form" method="post" action="{% url 'add_review' %}">
+        {% csrf_token %}
+    <label for="rating">Rating (1-10):</label>
+    <input type="number" id="rating" name="rating" min="1" max="10" required>
+    <textarea name="comment" placeholder="Your comment"></textarea>
+    <button type="submit">Submit Review</button>
+    </form>
+
+    {% for review in reviews %}
+    <div class="product">
+
+        <h4><strong>Person: {{ review.person }}</strong></h4>
+        <p>Comment: {{ review.comment }}</p>
+        <h5>Rating: {{ review.rating }}</h5>
+        <p >added on: {{ review.date }}</p>
+
+    </div>
+    {% endfor %}
+
+
+<script>
+
+    function goTo(category){
+        targetCategory = document.getElementById(category);
+
+        // Scroll to the target element
+        targetCategory.scrollIntoView({ behavior: 'smooth' });
+
+    }
+
+</script>
 
 
 
 {% endblock %}
 
-{% block script %}
-
-{% endblock %}
