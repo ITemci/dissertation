@@ -136,7 +136,7 @@ def dashboard(request):
         'orders':orders
     })
 
-
+@csrf_exempt
 def update_order_status(request, order_id):
     if request.method == 'POST':
         order = get_object_or_404(Sales, id=order_id)

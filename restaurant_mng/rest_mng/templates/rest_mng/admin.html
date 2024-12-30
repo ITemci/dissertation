@@ -8,6 +8,9 @@
         <link rel="stylesheet" href="{% static 'rest_mng/styles.css' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <!-- Adding Jquery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 
     </head>
     <body>
@@ -38,7 +41,6 @@
                 <h2>Order ID: {{ order.id }}</h2>
                 <p>User: {{ order.user.username }}</p>
                 <p>Date: {{ order.date }}</p>
-                <p>Status: <span id="status-{{ order.id }}">{{ order.status }}</span></p>
                 <p>Total Price: ${{ order.total_price }}</p>
                 <h3>Items:</h3>
                 <ul>
