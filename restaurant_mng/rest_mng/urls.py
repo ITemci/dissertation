@@ -15,5 +15,6 @@ urlpatterns = [
     path("history", views.history, name="history"),
     path("add_favorite", views.add_favorite, name="add_favorite"),
     path("remove_favorite", views.remove_favorite, name="remove_favorite"),
+    path('update_order_status/<int:order_id>/', views.update_order_status, name='update_order_status'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

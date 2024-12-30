@@ -30,7 +30,22 @@
    </div>
 
 
-   <div id="best_sellers"><h3>Best Sellers</h3></div>
+    <h3>Best Sellers</h3>
+   <div id="best_sellers">
+        {% for category, product in most_sold_items.items %}
+        <div class="best-seller-item">
+            <h3>{{ product.prod_name }}</h3><br>
+            <p>Description: {{ product.prod_desc }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <img src="{{ product.image.url }}" alt="{{ product.prod_name }}" class="prod_img">
+
+            <p>Fix this form (bellow)</p>
+            <label for="quantity_{{ product.id }}">Quantity:</label><br>
+                <input type="number"  value="1">
+                <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
+        </div>
+         {% endfor %}
+   </div>
 
 
 
@@ -83,23 +98,27 @@
 {% endfor %}
 
 
-<h2>Reviews</h2>
+<h2 style="margin-top:70px">Reviews</h2>
+    <h4>Overall Rating is: {{ average_rating }} / 10</h4>
 
     <form id="review-form" method="post" action="{% url 'add_review' %}">
         {% csrf_token %}
-    <label for="rating">Rating (1-10):</label>
-    <input type="number" id="rating" name="rating" min="1" max="10" required>
-    <textarea name="comment" placeholder="Your comment"></textarea>
-    <button type="submit">Submit Review</button>
+        <h5>Send your feedback</h5>
+    <label for="rating">Rating (1-10)</label>
+    <input type="number" id="rating" name="rating" min="1" max="10" value="10" required>
+    <textarea name="comment" placeholder="Your feedback"></textarea>
+    <button type="submit" class="btn-submit">Submit Review</button>
     </form>
+
+    <h4 style="margin-top: 50px;"> What our customers say</h4>
 
     {% for review in reviews %}
     <div class="product">
 
-        <h4><strong>Person: {{ review.person }}</strong></h4>
-        <p>Comment: {{ review.comment }}</p>
-        <h5>Rating: {{ review.rating }}</h5>
-        <p >added on: {{ review.date }}</p>
+        <h5><strong> {{ review.person }}</strong></h5>
+        <p><strong>Said:</strong> {{ review.comment }}</p>
+        <p ><strong>On:</strong> {{ review.date }}</p>
+        <h6>Rated: {{ review.rating }} / 10</h6>
 
     </div>
     {% endfor %}

@@ -1,7 +1,29 @@
-{% extends "rest_mng/layout.html" %}
 {% load static %}
 
-{% block body %}
+<! DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'rest_mng/styles.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    </head>
+    <body>
+
+    <!-- Navigation bar -->
+        <nav class="nav">
+            <ul id="nav_list">
+                <li class="list_item">
+                    <a class="list_link" href="{% url 'index' %}">Home </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+
 
     <h1><bold>Admin</bold></h1>
 
@@ -10,9 +32,27 @@
     {% endif %}
 
     <div id="row_1">
-    <div id="new_orders"><h2>New Orders</h2></div>
+    <div id="new_orders"><h2 style="text-decoration:underline">New Orders</h2>
+        {% for order in orders %}
+            <div class="order">
+                <h2>Order ID: {{ order.id }}</h2>
+                <p>User: {{ order.user.username }}</p>
+                <p>Date: {{ order.date }}</p>
+                <p>Status: <span id="status-{{ order.id }}">{{ order.status }}</span></p>
+                <p>Total Price: ${{ order.total_price }}</p>
+                <h3>Items:</h3>
+                <ul>
+                    {% for item in order.items.all %}
+                    <li>{{ item.product.prod_name }} (x{{ item.quantity }}) - ${{ item.price }}</li>
+                    {% endfor %}
+                </ul>
+                <button class="update-status" data-order-id="{{ order.id }}">Ready</button>
+            </div>
+            {% endfor %}
 
-    <div id="to_collect"><h2>Ready To Collect</h2></div>
+    </div>
+
+    <div id="to_collect"><h2 style="text-decoration:underline">Ready To Collect</h2></div>
     </div>
 
 
@@ -49,8 +89,20 @@
     </div>
 
 
-{% endblock %}
 
-{% block script %}
+<script>
+    $(document).on('click', '.update-status', function() {
+        const orderId = $(this).data('order-id');
+        $.post(`/update_order_status/${orderId}/`, {}, function(response) {
+            if (response.status === 'success') {
+                $(`#status-${orderId}`).text(response.new_status);
+                alert('Order status updated to ' + response.new_status);
+            } else {
+                alert('Failed to update order status: ' + response.message);
+            }
+        });
+    });
+</script>
 
-{% endblock %}
+    </body>
+    </html>

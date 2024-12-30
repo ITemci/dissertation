@@ -10,20 +10,38 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
+from django.db.models import Avg
+from django.db.models import Sum
 
 from .models import User,Product, Reviews,Sales, SalesItems
 
 # Create your views here.
 def index(request):
-    products = Product.objects.all()
+    average_rating = Reviews.objects.aggregate(Avg('rating'))['rating__avg']
+    if average_rating is None:
+        average_rating = 0
+
     categories = Product.objects.values_list('category', flat=True).distinct()
     products_by_category = {category: Product.objects.filter(category=category) for category in categories}
-
     reviews = Reviews.objects.order_by('-date')
+
+    # Fetch most sold items by category
+    most_sold_items = {}
+    for category in categories:
+        # Filter products by category and annotate sales quantity
+        products_in_category = Product.objects.filter(category=category).annotate(
+            total_quantity=Sum('salesitems__quantity')
+        ).order_by('-total_quantity')  # Order by highest quantity sold
+
+        if products_in_category.exists():
+            most_sold_items[category] = products_in_category.first()
+
     return render(request, 'rest_mng/index.html',{
-        'products_by_category':products_by_category,
-        'reviews': reviews,
-    })
+            'products_by_category':products_by_category,
+            'reviews': reviews,
+            'average_rating': round(average_rating, 2),
+            'most_sold_items': most_sold_items
+        })
 
 def login_view(request):
     if request.method == "POST":
@@ -112,7 +130,25 @@ def admin_dashboard(view_func):
 
 @admin_dashboard
 def dashboard(request):
-    return render(request, 'rest_mng/admin.html')
+    orders = Sales.objects.prefetch_related('items__product').filter(status='Preparing')
+
+    return render(request, 'rest_mng/admin.html',{
+        'orders':orders
+    })
+
+
+def update_order_status(request, order_id):
+    if request.method == 'POST':
+        order = get_object_or_404(Sales, id=order_id)
+
+        if order.status == 'Preparing':
+            order.status = 'Ready'
+            order.save()
+            return JsonResponse({'status': 'success', 'new_status': order.status})
+        else:
+            return JsonResponse({'status': 'failed', 'message': 'Order is not in "Preparing" status.'})
+    return JsonResponse({'status': 'failed', 'message': 'Invalid request method.'})
+
 
 # Add Review
 def add_review(request):
