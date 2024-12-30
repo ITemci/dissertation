@@ -35,9 +35,10 @@
         {% for category, product in most_sold_items.items %}
         <div class="best-seller-item">
             <h3>{{ product.prod_name }}</h3><br>
+            <img src="{{ product.image.url }}" alt="{{ product.prod_name }}" class="prod_img">
             <p>Description: {{ product.prod_desc }}</p>
             <p>Price: ${{ product.price }}</p>
-            <img src="{{ product.image.url }}" alt="{{ product.prod_name }}" class="prod_img">
+
 
             <p>Fix this form (bellow)</p>
             <label for="quantity_{{ product.id }}">Quantity:</label><br>
@@ -66,11 +67,7 @@
                 <strong style="margin-left: 10px;">{{ product.prod_name }}</strong>
                 <span> {{ product.prod_desc }}</span>
                 <h5>£{{ product.price }}</h5>
-            </div>
-
-            <p>favorite: {{ product.favorite.count }}</p>
-
-            {% if user.is_authenticated %}
+                {% if user.is_authenticated %}
             <form id="add_cart">
                 <label for="quantity_{{ product.id }}">Quantity:</label>
                 <input type="number" id="quantity_{{ product.id }}" min="1" value="1">
@@ -90,23 +87,40 @@
             </form>
 
             {% endif %}
+            </div>
+
+
         </div>
         {% endfor %}
     </div>
 {% endfor %}
 
+<!-- Reviews section -->
+<h2 style="margin-top:70px; margin-bottom:20px;">Reviews</h2>
 
-<h2 style="margin-top:70px">Reviews</h2>
-    <h4>Overall Rating is: {{ average_rating }} / 10</h4>
+    <div id="reviews">
+        <div id="rating_score">
+            <div style="width:60%; height: 90%; border-radius: 10px;     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+; display:flex;flex-direction:column; align-items:center;justify-content:center;">
+                <img src="images/images/rating_icon.webp" style="width:80%; height:auto">
+                <p style="font-size:50px; font-weight:500">Our Rating <br> {{ average_rating }} / 10</p>
+            </div>
+        </div>
 
-    <form id="review-form" method="post" action="{% url 'add_review' %}">
-        {% csrf_token %}
-        <h5>Send your feedback</h5>
-    <label for="rating">Rating (1-10)</label>
-    <input type="number" id="rating" name="rating" min="1" max="10" value="10" required>
-    <textarea name="comment" placeholder="Your feedback"></textarea>
-    <button type="submit" class="btn-submit">Submit Review</button>
-    </form>
+        <div id="feedback">
+
+            <form id="review-form" method="post" action="{% url 'add_review' %}">
+            {% csrf_token %}
+            <h5>Send your feedback</h5>
+            <label for="rating">Rating (1-10)</label>
+            <input type="number" id="rating" name="rating" min="1" max="10" value="10" required>
+            <textarea name="comment" placeholder="Your feedback"></textarea>
+            <button type="submit" class="btn-submit">Submit Review</button>
+            </form>
+        </div>
+
+
+    </div>
 
     <h4 style="margin-top: 50px;"> What our customers say</h4>
 

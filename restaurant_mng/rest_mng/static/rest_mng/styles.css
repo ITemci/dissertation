@@ -120,6 +120,13 @@ h3, h4{
 
     }
 
+    .prod_img{
+        scale: .7;
+
+    }
+
+
+
     #nav_list {
         flex-direction: column;
         gap: 0;
@@ -212,8 +219,8 @@ h3, h4{
 }
 
 .prod_img{
-    width: 60px;
-    height:60px;
+    width: 200px;
+    height:200px;
     border-radius: 10px;
 }
 
@@ -324,7 +331,19 @@ h3, h4{
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-left: 40px;
-    width: 50%;
+    width: 80%;
+}
+
+#reviews{
+    display:flex;
+    flex-direction: row;
+}
+
+#rating_score{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:50%;
 }
 
 /* Input Fields */
