@@ -130,7 +130,7 @@ def admin_dashboard(view_func):
 
 @admin_dashboard
 def dashboard(request):
-    orders = Sales.objects.prefetch_related('items__product').filter(status='Preparing')
+    orders = Sales.objects.prefetch_related('items__product')
 
     return render(request, 'rest_mng/admin.html',{
         'orders':orders
@@ -140,13 +140,19 @@ def dashboard(request):
 def update_order_status(request, order_id):
     if request.method == 'POST':
         order = get_object_or_404(Sales, id=order_id)
+        current_status = order.status
 
-        if order.status == 'Preparing':
+        if current_status == 'Preparing':
             order.status = 'Ready'
-            order.save()
-            return JsonResponse({'status': 'success', 'new_status': order.status})
+        elif current_status == 'Ready':
+            order.status = 'Collected'
         else:
-            return JsonResponse({'status': 'failed', 'message': 'Order is not in "Preparing" status.'})
+            return JsonResponse(
+                {'status': 'failed', 'message': f'Order is not in a valid status to update from "{current_status}".'})
+
+        order.save()
+        return JsonResponse({'status': 'success', 'new_status': order.status})
+
     return JsonResponse({'status': 'failed', 'message': 'Invalid request method.'})
 
 

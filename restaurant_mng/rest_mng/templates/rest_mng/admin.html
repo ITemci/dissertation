@@ -35,26 +35,43 @@
     {% endif %}
 
     <div id="row_1">
-    <div id="new_orders"><h2 style="text-decoration:underline">New Orders</h2>
-        {% for order in orders %}
-            <div class="order">
-                <h2>Order ID: {{ order.id }}</h2>
-                <p>User: {{ order.user.username }}</p>
-                <p>Date: {{ order.date }}</p>
-                <p>Total Price: ${{ order.total_price }}</p>
-                <h3>Items:</h3>
-                <ul>
-                    {% for item in order.items.all %}
-                    <li>{{ item.product.prod_name }} (x{{ item.quantity }}) - ${{ item.price }}</li>
-                    {% endfor %}
-                </ul>
-                <button class="update-status" data-order-id="{{ order.id }}">Ready</button>
-            </div>
+        <div id="new_orders"><h2 style="text-decoration:underline">New Orders</h2>
+            {% for order in orders %}
+            {% if order.status == 'Preparing' %}
+                <div class="order">
+                    <h5>Order ID: {{ order.id }}</h5>
+                    <p>User: {{ order.user.username }}</p>
+                    <p>Date: {{ order.date }}</p>
+                    <p>Total Price: ${{ order.total_price }}</p>
+                    <h5>Items:</h5>
+                    <ul>
+                        {% for item in order.items.all %}
+                        <li>{{ item.product.prod_name }} (x{{ item.quantity }}) - ${{ item.price }}</li>
+                        {% endfor %}
+                    </ul>
+                    <button class="update-status" data-order-id="{{ order.id }}">Ready</button>
+                </div>
+            {% endif %}
             {% endfor %}
 
-    </div>
+        </div>
 
-    <div id="to_collect"><h2 style="text-decoration:underline">Ready To Collect</h2></div>
+        <div id="to_collect"><h2 style="text-decoration:underline">Ready To Collect</h2>
+            {% for order in orders %}
+            {% if order.status == 'Ready' %}
+                <div class="order">
+                    <h5>Order ID: {{ order.id }}</h5>
+                    <h5>Items:</h5>
+                    <ul>
+                        {% for item in order.items.all %}
+                        <li>{{ item.product.prod_name }} (x{{ item.quantity }}) - ${{ item.price }}</li>
+                        {% endfor %}
+                    </ul>
+                    <button class="collected" data-order-id="{{ order.id }}">Collected</button>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
     </div>
 
 
@@ -93,18 +110,36 @@
 
 
 <script>
+    // Refresh the page every 10 seconds
+    setInterval(function() {
+        location.reload();
+    }, 10000);
+
+    // Update order status for 'Preparing' -> 'Ready'
     $(document).on('click', '.update-status', function() {
         const orderId = $(this).data('order-id');
         $.post(`/update_order_status/${orderId}/`, {}, function(response) {
             if (response.status === 'success') {
-                $(`#status-${orderId}`).text(response.new_status);
-                alert('Order status updated to ' + response.new_status);
+                location.reload(); // Refreshes the page
+            } else {
+                alert('Failed to update order status: ' + response.message);
+            }
+        });
+    });
+
+    // Update order status for 'Ready' -> 'Collected'
+    $(document).on('click', '.collected', function() {
+        const orderId = $(this).data('order-id');
+        $.post(`/update_order_status/${orderId}/`, {}, function(response) {
+            if (response.status === 'success') {
+                location.reload(); // Refreshes the page
             } else {
                 alert('Failed to update order status: ' + response.message);
             }
         });
     });
 </script>
+
 
     </body>
     </html>

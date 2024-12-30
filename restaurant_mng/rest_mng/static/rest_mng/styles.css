@@ -160,6 +160,10 @@ h3, h4{
 
     }
 
+    #cart{
+        min-width: 80%;
+    }
+
 
 }
 
@@ -176,6 +180,8 @@ h3, h4{
           padding: 10px;
 
     }
+
+
 
 }
 
@@ -227,7 +233,7 @@ h3, h4{
     margin-bottom: 10px;
 }
 
-#new_orders{
+#new_orders, #to_collect{
     flex-grow:1;
     background-color: white;
     margin:5px;
@@ -240,7 +246,14 @@ h3, h4{
     flex-grow:2;
     background-color: white;
     margin:5px;
-    height:300px;
+
+}
+
+.order{
+    padding: 5px 20px;
+    margin: 7px;
+    background-color: lightgrey;
+    border-radius:5px;
 }
 
 #reservations{
@@ -277,7 +290,7 @@ h3, h4{
 }
 
 #cart{
-    width: 40%;
+    width: 60%;
     min-height:100px;
     max-height:auto;
     margin-left: auto;
