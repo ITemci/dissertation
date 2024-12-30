@@ -95,6 +95,13 @@ def register(request):
     else:
         return render(request, "rest_mng/register.html")
 
+@login_required
+def favorites(request):
+    user = request.user  # Get the logged-in user
+    favorite_products = Product.objects.filter(favorite=user)
+    return render(request, 'rest_mng/favorites.html', {'favorite_products': favorite_products})
+
+
 def new_product(request):
         if request.method == "POST":
             title = request.POST['prod_name']
@@ -215,22 +222,14 @@ def history(request):
         'items': items
     })
 
-def add_favorite(request):
+@login_required
+def toggle_favorite(request):
     if request.method == 'POST':
-        product_id = request.POST.get('product_id')
+        product_id = request.POST['product_id']
         product = get_object_or_404(Product, id=product_id)
-        current_user = request.user
-
-        if current_user in product.favorite.all():
-            messages.warning(request, "You have already added this product to favorites.")
+        user = request.user
+        if product in user.favorite.all():
+            user.favorite.remove(product)
         else:
-            product.favorite.add(current_user)
-            messages.success(request, "Product added to favorites!")
-
-        return redirect('index')
-    else:
-        messages.error(request, "Invalid request.")
-        return redirect('index')
-
-def remove_favorite(request):
-    pass
+            user.favorite.add(product)
+    return redirect('index')

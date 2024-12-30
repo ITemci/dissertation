@@ -1,0 +1,48 @@
+{% extends "rest_mng/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h2>Favorites</h2>
+    <!-- For log in/ register error messages-->
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <!-- This one is for dashboard error access -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if forloop.last %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+
+{% for product in favorite_products %}
+
+    <div class="product">
+        <h4>Product: {{ product.prod_name }}</h4>
+        <h4>Product description: {{ product.prod_desc }}</h4>
+        <h4>Price: {{ product.price }}</h4>
+        <h4>Category: {{ product.category }}</h4>
+
+        <form id="add_cart">
+                <label for="quantity_{{ product.id }}">Quantity:</label>
+                <input type="number" id="quantity_{{ product.id }}" min="1" value="1">
+                <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
+        </form>
+
+    </div>
+
+{% empty %}
+    <h3>No favorite items</h3>
+
+{% endfor %}
+
+
+{% endblock %}
+

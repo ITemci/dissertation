@@ -25,7 +25,7 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="list_item">
-                    <a class="list_link" href="#">Favorites </a>
+                    <a class="list_link" href="{% url 'favorites' %}">Favorites </a>
                     </li>
                 {% endif %}
                 {% if user.is_authenticated %}
