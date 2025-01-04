@@ -45,12 +45,7 @@
 
             </ul>
 
-            <div class="search-bar">
-                <form class="d-flex" role="search" style="margin:0px; padding:0px;">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="margin-right:7px; margin-top:2px">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
+
 
             {% if not user.is_authenticated %}
             <a class="list_link" href="{% url 'login' %}">Log In</a>
@@ -78,7 +73,10 @@
 
         {% if user.is_authenticated %}
         <!-- Cart -->
-        <div id="cart_btn">Cart</div>
+        <div id="cart_btn">
+            <img src="images/images/cart_icon.png" style="height:30px; width:30px; margin-top:20px;">
+            <p>Cart</p>
+        </div>
         <div id="cart" >
         <h2>Cart</h2>
             <ul id="cart-items"></ul>
@@ -94,6 +92,31 @@
 <script src="static/rest_mng/cart_functionality.js"></script>
 <script src="static/rest_mng/cart_toggle.js"></script>
 
+
+    <footer>
+
+        <div id="footer">
+            <div class="footer_item">
+                <h3>Opening hours</h3>
+                <p>
+                    Monday - Friday <br> 8am - 7pm <br>
+                    Saturday - Sunday <br> 10am - 9pm
+                </p>
+            </div>
+            <div class="footer_item">
+                <h3>Address</h3>
+                <p>Some fake address</p>
+            </div>
+            <div class="footer_item">
+                <h3>Contact us</h3>
+                <p>
+                    For any enquiries, questions or suggestions <br>
+                    You can e-mail us on daskdj@mailcom</p>
+            </div>
+        </div>
+
+        <p style=" margin-bottom: 0px; margin-top:auto; text-align:center;">Rest_mng . 2025 . Copyrights reserved</p>
+    </footer>
 
         </body>
     </html>

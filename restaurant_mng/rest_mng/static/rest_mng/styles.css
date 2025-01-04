@@ -4,9 +4,7 @@ body, ul, li, a, input {
     padding: 0;
     box-sizing: border-box;
 }
-body{
-    padding-bottom: 20px;
-}
+
 
 h2{
     text-align:center;
@@ -171,6 +169,16 @@ h3, h4{
         min-width: 80%;
     }
 
+    #reviews{
+        justify-content: center;
+        flex-direction: column; !important
+    }
+
+    #rating_score{
+        min-width:100%;
+
+    }
+
 
 }
 
@@ -279,13 +287,14 @@ h3, h4{
 }
 
 #cart_btn{
-    width: 90px;
+    width: 70px;
     height: 70px;
     border-radius: 30px;
     right: 20px;
     bottom: 20px;
     background-color: lightblue;
     display: flex;
+    flex-direction:column;
     justify-content: center;
     align-items: center;
     position:fixed;
@@ -337,6 +346,8 @@ h3, h4{
 #reviews{
     display:flex;
     flex-direction: row;
+    flex-wrap: wrap;
+
 }
 
 #rating_score{
@@ -344,6 +355,7 @@ h3, h4{
     align-items:center;
     justify-content:center;
     width:50%;
+
 }
 
 /* Input Fields */
@@ -383,5 +395,33 @@ textarea:focus {
     background-color: #0056b3;
 }
 
+/* footer */
+footer{
+    height: 300px;
+    background: grey;
+    margin-top: 30px;
 
+}
+
+#footer{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+
+}
+
+.footer_item{
+    padding: 10px 20px;
+}
+
+#footer > div {
+    background-color: white;
+    width: 30%;
+    height: 250px;
+}
+
+.footer_item h3{
+    text-align: center;
+}
 
