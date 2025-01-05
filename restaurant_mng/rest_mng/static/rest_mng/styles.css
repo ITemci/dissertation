@@ -123,6 +123,11 @@ h3, h4{
 
     }
 
+    #prod_heading{
+        flex-direction: column;
+        justify-content: center;
+    }
+
 
 
     #nav_list {
@@ -176,6 +181,17 @@ h3, h4{
 
     #rating_score{
         min-width:100%;
+
+    }
+
+    .footer_item{
+        min-width: 100%;
+        padding: 5px;
+    }
+
+    .footer_item > p{
+        display: flex;
+        justify-content: center;
 
     }
 
@@ -284,6 +300,14 @@ h3, h4{
     margin:5px 5px;
     height:auto;
     padding: 10px;
+}
+
+#stock{
+    min-height: 20px;
+    height: auto;
+    width: 90%;
+    border: 2px solid black;
+    margin: 20px;
 }
 
 #cart_btn{
@@ -397,31 +421,39 @@ textarea:focus {
 
 /* footer */
 footer{
-    height: 300px;
-    background: grey;
+    height: auto;
+    background: #1a0d00;
     margin-top: 30px;
-
+    color:white;
+    padding-bottom: 10px;
 }
 
 #footer{
     display:flex;
+    flex-wrap:wrap;
     flex-direction: row;
     justify-content: space-between;
     padding: 10px 20px;
+    height:auto;
 
 }
 
 .footer_item{
-    padding: 10px 20px;
+    padding: 20px 60px;
+    font-size: 18px;
+    height: auto;
 }
 
 #footer > div {
-    background-color: white;
+
     width: 30%;
-    height: 250px;
+
+
 }
 
 .footer_item h3{
     text-align: center;
 }
+
+
 

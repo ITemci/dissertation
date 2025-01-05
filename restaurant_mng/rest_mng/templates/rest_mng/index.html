@@ -71,7 +71,12 @@
             <form id="add_cart">
                 <label for="quantity_{{ product.id }}">Quantity:</label>
                 <input type="number" id="quantity_{{ product.id }}" min="1" value="1">
+
+                {% if product.in_stock %}
                 <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
+                {% else %}
+                <button disabled>Add to Cart</button>
+                {% endif %}
             </form>
 
             <form method="POST" action="{% url 'toggle_favorite' %}">

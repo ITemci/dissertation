@@ -16,5 +16,7 @@ urlpatterns = [
     path("history", views.history, name="history"),
     path('toggle-favorite/', views.toggle_favorite, name='toggle_favorite'),
     path('update_order_status/<int:order_id>/', views.update_order_status, name='update_order_status'),
+    path('toggle-stock/<int:product_id>/', views.toggle_stock, name='toggle_stock'),
+    path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

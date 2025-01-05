@@ -119,7 +119,8 @@ def new_product(request):
                 image=image
             )
             product.save()
-            return redirect('index')
+            messages.success(request, f"New product has been created !!!")
+            return redirect('dashboard')
 
         return render(request, 'index.html')
 
@@ -138,10 +139,28 @@ def admin_dashboard(view_func):
 @admin_dashboard
 def dashboard(request):
     orders = Sales.objects.prefetch_related('items__product')
+    products = Product.objects.all()
 
     return render(request, 'rest_mng/admin.html',{
-        'orders':orders
+        'orders':orders,
+        'products' : products
     })
+
+def toggle_stock(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        product.in_stock = not product.in_stock
+        product.save()
+        messages.success(request, f"The stock status of {product.prod_name} has been updated.")
+    return redirect('dashboard')
+
+def delete_product(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        product_name = product.prod_name
+        product.delete()
+        messages.success(request, f"The product '{product_name}' has been deleted.")
+    return redirect('dashboard')
 
 @csrf_exempt
 def update_order_status(request, order_id):
