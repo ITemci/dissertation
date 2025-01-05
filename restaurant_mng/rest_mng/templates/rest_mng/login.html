@@ -3,7 +3,6 @@
 
 {% block body %}
 
-<h2>Login</h2>
     <!-- For log in/ register error messages-->
     {% if message %}
         <div>{{ message }}</div>
@@ -20,6 +19,8 @@
     </ul>
     {% endif %}
 
+<div style="width:100%;  padding: 60px 30%; margin: 50px 0px;">
+    <h2 style="margin-bottom: 40px;">Login</h2>
 
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
@@ -33,6 +34,8 @@
     </form>
 
     Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+
+</div>
 
 {% endblock %}
 

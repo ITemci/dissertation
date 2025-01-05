@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block body %}
-        <div>
+        <div style="padding: 5px; ">
             {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
+                Welcome <strong>{{ user.username }}</strong>.
             {% else %}
                 Not signed in.
             {% endif %}
@@ -30,7 +30,7 @@
    </div>
 
 
-    <h3>Best Sellers</h3>
+    <h3 style="margin-top: 30px;">Best Sellers</h3>
    <div id="best_sellers">
         {% for category, product in most_sold_items.items %}
         <div class="best-seller-item">
@@ -53,7 +53,7 @@
 
 <h2>Menu</h2>
 {% for category, products in products_by_category.items %}
-    <h4 id="{{category}}">{{ category }}</h4>
+    <h4 id="{{category}}" style="margin-top: 20px;">{{ category }}</h4>
     <div class="category-products">
         {% for product in products %}
         <div class="product">

@@ -12,6 +12,7 @@ from decimal import Decimal
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg
 from django.db.models import Sum
+import re
 
 from .models import User,Product, Reviews,Sales, SalesItems
 
@@ -76,9 +77,21 @@ def register(request):
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+
+        # Password validation regex
+        password_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+
+        # Check if passwords match
         if password != confirmation:
             return render(request, "rest_mng/register.html", {
                 "message": "Passwords must match."
+            })
+
+        # Check password strength
+        if not re.match(password_pattern, password):
+            return render(request, "rest_mng/register.html", {
+                "message": "Password must be at least 8 characters long, include a number, a special character, "
+                           "and have a mix of uppercase and lowercase letters."
             })
 
         # Attempt to create new user
@@ -88,12 +101,15 @@ def register(request):
         except IntegrityError:
             return render(request, "rest_mng/register.html", {
                 "message": "Username already taken."
-
             })
+
+        # Log the user in and redirect to index
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        return render(request, "rest_mng/register.html")
+        return redirect(reverse("index"))
+
+    # If GET request, render the registration page
+    return render(request, "rest_mng/register.html")
+
 
 @login_required
 def favorites(request):

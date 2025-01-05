@@ -11,8 +11,14 @@ h2{
     margin-top: 10px;
 }
 
+.order-toggle{
+    border: 0;
+    padding: 10px 30px;
+    margin: 10px 30px;
+}
+
 h3, h4{
-    margin-top: 20px;
+
     margin-left:30px;
 }
 
@@ -280,12 +286,7 @@ h3, h4{
 
 }
 
-.order{
-    padding: 5px 20px;
-    margin: 7px;
-    background-color: lightgrey;
-    border-radius:5px;
-}
+
 
 #reservations{
     flex-grow:2;
