@@ -24,11 +24,11 @@
 
 {% for product in favorite_products %}
 
-    <div class="product">
-        <h4>Product: {{ product.prod_name }}</h4>
-        <h5>Product description: {{ product.prod_desc }}</h5>
-        <h5>Price: {{ product.price }}</h5>
-        <h5>Category: {{ product.category }}</h5>
+    <div class="product" style="padding:10px 40px;">
+        <h3 style="margin-left:0px;">{{ product.prod_name }}</h3>
+        <h6 >Description: {{ product.prod_desc }}</h6>
+        <h6>Price: {{ product.price }}</h6>
+        <h6>Category: {{ product.category }}</h6>
 
         <form id="add_cart">
                 <label for="quantity_{{ product.id }}">Quantity:</label>

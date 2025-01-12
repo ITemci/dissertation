@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from django.shortcuts import HttpResponse, HttpResponseRedirect, render, redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -249,6 +249,7 @@ def checkout(request):
         return JsonResponse({'message': 'Checkout successful!'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+@login_required
 def history(request):
     sales = Sales.objects.order_by('-date')
     items = SalesItems.objects.all()
