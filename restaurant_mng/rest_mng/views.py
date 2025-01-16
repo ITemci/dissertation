@@ -13,12 +13,17 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Avg
 from django.db.models import Sum
 import re
+from .forms import ReservationForm
+import datetime
+from django.db import models
 
-from .models import User,Product, Reviews,Sales, SalesItems
+from .models import User,Product, Reviews,Sales, SalesItems, Reservation
 
 # Create your views here.
 def index(request):
     average_rating = Reviews.objects.aggregate(Avg('rating'))['rating__avg']
+    form = ReservationForm()
+
     if average_rating is None:
         average_rating = 0
 
@@ -41,7 +46,8 @@ def index(request):
             'products_by_category':products_by_category,
             'reviews': reviews,
             'average_rating': round(average_rating, 2),
-            'most_sold_items': most_sold_items
+            'most_sold_items': most_sold_items,
+            'form': form
         })
 
 def login_view(request):
@@ -156,10 +162,12 @@ def admin_dashboard(view_func):
 def dashboard(request):
     orders = Sales.objects.prefetch_related('items__product')
     products = Product.objects.all()
+    reservations = Reservation.objects.all()
 
     return render(request, 'rest_mng/admin.html',{
         'orders':orders,
-        'products' : products
+        'products' : products,
+        'reservations': reservations
     })
 
 def toggle_stock(request, product_id):
@@ -269,3 +277,43 @@ def toggle_favorite(request):
         else:
             user.favorite.add(product)
     return redirect('index')
+
+
+# Reservation view
+@login_required
+def make_reservation(request):
+    form = ReservationForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        reservation = form.save(commit=False)
+        reservation.user = request.user
+        reservation.save()
+        messages.success(request, "Your reservation has been made!")
+        return redirect('index')
+    else:
+        print('Something went wrong')
+
+
+
+@login_required
+def available_times(request):
+    date = request.GET.get('date')
+    if not date:
+        return JsonResponse({'times': []})
+
+    try:
+        date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+    except ValueError:
+        return JsonResponse({'times': []})
+
+    available_times = []
+    for hour in range(10, 22):
+        time = f"{hour}:00"
+        total_reserved = (
+            Reservation.objects.filter(date=date_obj, time=time)
+            .aggregate(total=models.Sum('num_tables'))['total'] or 0
+        )
+        if total_reserved < 10:
+            available_times.append(time)
+
+    return JsonResponse({'times': available_times})

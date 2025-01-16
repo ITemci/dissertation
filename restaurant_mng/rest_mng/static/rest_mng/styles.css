@@ -17,6 +17,10 @@ h2{
     margin: 10px 30px;
 }
 
+.update-status, .collected{
+    margin: 15px 0px;
+}
+
 h3, h4{
 
     margin-left:30px;
@@ -40,8 +44,17 @@ h3, h4{
 
 #categories{
     width: 100%;
-    height: 400px;
+    min-height: 300px;
     background-color: lightgrey;
+    padding-bottom: 10px;
+
+}
+
+#category-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 30px;
 }
 
 /* Navigation Bar Styles */
@@ -86,22 +99,6 @@ h3, h4{
     border-radius: 5px;
 }
 
-.search-bar input {
-    padding: 7px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.search-bar{
-    margin-right:10px;
-    margin-left:auto;
-}
-
-.search-bar input:focus {
-    outline: none;
-    border-color: #888;
-}
 
 
 
@@ -201,6 +198,19 @@ h3, h4{
 
     }
 
+    #category-list{
+        flex-direction:column;
+
+    }
+
+    .category{
+        min-width:90%;
+        margin: 5px auto;
+        max-height: 80px;
+        align-items:center;
+
+    }
+
 
 }
 
@@ -234,13 +244,13 @@ h3, h4{
 
 .category{
     background-color:white;
-    margin:20px;
-    height: 70px;
+    height: 200px;
+    width: 25%;
     display: flex;
     justify-content:center;
     align-items:center;
     border-radius: 10px;
-    padding-top:20px;
+
 
 }
 
@@ -264,7 +274,7 @@ h3, h4{
     display:flex;
     flex-direction: row;
     width:90%;
-    background-color: green;
+
     margin-left:auto;
     margin-right:auto;
     margin-bottom: 10px;
@@ -272,17 +282,19 @@ h3, h4{
 
 #new_orders, #to_collect{
     flex-grow:1;
-    background-color: white;
     margin:5px;
     max-height:600px;
     overflow-y: auto;
-    padding:5px;
+    padding:5px 30px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background-color: #f2f2f2;
 
 }
 
 #to_collect{
     flex-grow:2;
-    background-color: white;
+
     margin:5px;
 
 }
@@ -291,26 +303,33 @@ h3, h4{
 
 #reservations{
     flex-grow:2;
-    background-color: white;
     margin:5px 5px;
     height:auto;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background-color: #f2f2f2;
 }
 
 #create_new{
     flex-grow:1;
-    background-color: white;
     margin:5px 5px;
     height:auto;
     padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background-color: #f2f2f2;
 }
 
 #stock{
-    min-height: 20px;
-    height: auto;
-    width: 90%;
-    border: 2px solid black;
-    margin: 20px auto;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    width:90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
 }
+
 
 #cart_btn{
     width: 70px;
@@ -351,6 +370,14 @@ h3, h4{
 #add_cart input[type='number']{
     width: 50px;
     padding:5px;
+}
+
+.add_cart{
+
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #737373;
 }
 
 #prod_heading{

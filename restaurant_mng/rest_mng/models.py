@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-import datetime
-from django.utils import timezone
 
 class User(AbstractUser):
     pass
@@ -44,3 +42,25 @@ class SalesItems(models.Model):
     product = models.ForeignKey('Product', on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
+class Reservation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reservations")
+    date = models.DateField()
+    time = models.TimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    num_tables = models.IntegerField(default=1)
+
+    class Meta:
+        # Prevent duplicate reservations for same date and time
+        unique_together = ('date', 'time')
+
+    def __str__(self):
+        return f"Reservation by {self.user} on {self.date} at {self.time}"
+
+    @staticmethod
+    def is_available(date, time, num_tables=1):
+        total_reserved = (
+                Reservation.objects.filter(date=date, time=time)
+                .aggregate(total=models.Sum('num_tables'))['total'] or 0
+        )
+        return total_reserved + num_tables <= 10

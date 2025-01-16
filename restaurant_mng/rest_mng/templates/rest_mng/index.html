@@ -22,11 +22,13 @@
     {% endif %}
 
    <div id="categories">  <h3> Categories </h3>
+       <div id="category-list">
 
     {% for category in products_by_category %}
-       <div class="category" onclick="goTo('{{category}}')"><p style="font-size: 30px; font-weight: 500; ">{{ category }}</p></div>
+       <div class="category" onclick="goTo('{{category}}')"><p style="font-size: 30px; font-weight: 500; margin:0px; ">{{ category }}</p></div>
 
    {% endfor %}
+       </div>
    </div>
 
 
@@ -40,10 +42,7 @@
             <p>Price: ${{ product.price }}</p>
 
 
-            <p>Fix this form (bellow)</p>
-            <label for="quantity_{{ product.id }}">Quantity:</label><br>
-                <input type="number"  value="1">
-                <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
+
         </div>
          {% endfor %}
    </div>
@@ -72,7 +71,7 @@
                 {% if product.in_stock %}
                 <label for="quantity_{{ product.id }}">Quantity:</label>
                 <input type="number" id="quantity_{{ product.id }}" min="1" value="1">
-                <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})">Add to Cart</button>
+                <button onclick="addToCart({{ product.id }}, '{{ product.prod_name }}', {{ product.price }})" class="add_cart">Add to Cart</button>
                 {% else %}
                 <strong style="color:red">Out of stock </strong>
 
@@ -82,7 +81,7 @@
             <form method="POST" action="{% url 'toggle_favorite' %}">
             {% csrf_token %}
                 <input type="hidden" name="product_id" value="{{ product.id }}">
-                <button type="submit">
+                <button type="submit" class="add_cart" style="background-color: #006bb3; color:white;">
                     {% if product in user.favorite.all %}
                         Remove from Favorites
                     {% else %}
@@ -144,6 +143,47 @@
 
     </div>
     {% endfor %}
+
+
+<!-- Reservation form -->
+<h2>Make a Reservation</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.date }}
+    <label for="id_time">Time:</label>
+    <select id="id_time" name="time">
+      {% for value, label in form.fields.time.choices %}
+        <option value="{{ value }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+    {{ form.num_tables }}
+    <button type="submit" class="btn btn-primary">Reserve</button>
+  </form>
+
+  <script>
+    document.getElementById('id_date').addEventListener('change', function() {
+      const date = this.value;
+      const timeSelect = document.getElementById('id_time');
+
+      fetch(`/available-times/?date=${date}`)
+        .then(response => response.json())
+        .then(data => {
+          // Clear the current options
+          timeSelect.innerHTML = '';
+          // Add new options
+          data.times.forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+          });
+        });
+    });
+  </script>
+
+
+
+
 
 
 <script>

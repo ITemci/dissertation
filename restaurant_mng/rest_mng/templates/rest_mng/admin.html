@@ -46,18 +46,17 @@
         <div id="new_orders"><h2 style="text-decoration:underline">New Orders</h2>
             {% for order in orders %}
             {% if order.status == 'Preparing' %}
-                <div class="order">
+                <div class="product" style="padding:10px 40px;">
                     <h5>Order ID: {{ order.id }}</h5>
-                    <p>User: {{ order.user.username }}</p>
                     <p>Date: {{ order.date }}</p>
                     <p>Total Price: ${{ order.total_price }}</p>
-                    <h5>Items:</h5>
+                    <h5>Items</h5>
                     <ul>
                         {% for item in order.items.all %}
                         <li>{{ item.product.prod_name }} (x{{ item.quantity }}) - ${{ item.price }}</li>
                         {% endfor %}
                     </ul>
-                    <button class="update-status" data-order-id="{{ order.id }}">Ready</button>
+                    <button class="update-status btn btn-primary" data-order-id="{{ order.id }}">Ready</button>
                 </div>
             {% endif %}
             {% endfor %}
@@ -67,15 +66,15 @@
         <div id="to_collect"><h2 style="text-decoration:underline">Ready To Collect</h2>
             {% for order in orders %}
             {% if order.status == 'Ready' %}
-                <div class="order">
+                <div class="product" style="padding:10px 40px;">
                     <h5>Order ID: {{ order.id }}</h5>
-                    <h5>Items:</h5>
+                    <h5>Items</h5>
                     <ul>
                         {% for item in order.items.all %}
                         <li>{{ item.product.prod_name }} (x{{ item.quantity }}) - ${{ item.price }}</li>
                         {% endfor %}
                     </ul>
-                    <button class="collected" data-order-id="{{ order.id }}">Collected</button>
+                    <button class="collected btn btn-success" data-order-id="{{ order.id }}">Collected</button>
                 </div>
             {% endif %}
             {% endfor %}
@@ -84,7 +83,16 @@
 
 
     <div id="row_2">
-    <div id="reservations"><h2>Reservations</h2></div>
+    <div id="reservations"><h2>Reservations</h2>
+    {% for reservation in reservations %}
+
+        <p>Name: {{reservation.user}}</p>
+        <p>Date: {{reservation.date}} at {{reservation.time}}</p>
+        <p>Nr. of tables: {{reservation.num_tables}}</p>
+        <br><br>
+
+    {% endfor %}
+    </div>
 
     <div id="create_new">
         <h2>Create New Product</h2>
@@ -108,9 +116,9 @@
         </select><br><br>
 
         <label for="image">Product Image:</label>
-        <input type="file" id="image" name="image" accept="image/*"><br><br>
+        <input type="file" id="image" name="image" accept="image/*" class="btn btn-info"><br><br>
 
-        <button type="submit">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     </div>
     </div>
@@ -118,7 +126,7 @@
 
     <!-- Stock container -->
     <div id="stock">
-    <h2 align="center"> Stock management</h2>
+    <h2 align="center" style="margin:30px 0px;"> Stock management</h2>
         {% for product in products %}
         <div class="product">
 
@@ -137,12 +145,12 @@
                     In stock: {{ product.in_stock }}
                     <form method="POST" action="{% url 'toggle_stock' product.id %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit">Toggle Stock</button>
+                        <button type="submit" class="btn btn-info">Toggle Stock</button>
                     </form> <br><br>
                     Delete this produc:
                     <form method="POST" action="{% url 'delete_product' product.id %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
 
