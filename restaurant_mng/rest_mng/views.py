@@ -74,6 +74,9 @@ def logout_view(request):
     logout(request)
     return redirect('index')
 
+def terms(request):
+    return render(request, 'rest_mng/T&Cs.html')
+
 
 def register(request):
     if request.method == "POST":

@@ -70,6 +70,7 @@
     {% block body %} {% endblock %}
 
         {% if user.is_authenticated %}
+
         <!-- Cart -->
         <div id="cart_btn">
             <img src="images/images/cart_icon.png" style="height:30px; width:30px; margin-top:20px;">
@@ -89,6 +90,8 @@
 
 <script src="static/rest_mng/cart_functionality.js"></script>
 <script src="static/rest_mng/cart_toggle.js"></script>
+
+
 
 
     <footer>
@@ -112,7 +115,7 @@
                     You can e-mail us on customer_service@mail.com</p>
             </div>
         </div>
-        <p style=" margin-bottom: 0px; margin-top:10px; text-align:center; border-top: 1px solid white; padding-top:10px;">This site is using cookies. For Terms & Conditions and see how we use collected data <a href="#">click here.<a></a></p>
+        <p style=" margin-bottom: 0px; margin-top:10px; text-align:center; border-top: 1px solid white; padding-top:10px;">This site is using cookies. For Terms & Conditions and see how we use collected data <a href="{% url 'terms' %}">click here.<a></a></p>
         <p style=" margin-bottom: 0px; margin-top:10px; text-align:center; border-top: 1px solid white; padding-top:10px;">Rest_mng . 2025 . Copyrights reserved</p>
     </footer>
 

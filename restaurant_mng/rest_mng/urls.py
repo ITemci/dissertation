@@ -14,6 +14,7 @@ urlpatterns = [
     path("add_review", views.add_review, name="add_review"),
     path("checkout", views.checkout, name="checkout"),
     path("history", views.history, name="history"),
+    path("terms", views.terms, name="terms"),
     path('toggle-favorite/', views.toggle_favorite, name='toggle_favorite'),
     path('update_order_status/<int:order_id>/', views.update_order_status, name='update_order_status'),
     path('toggle-stock/<int:product_id>/', views.toggle_stock, name='toggle_stock'),

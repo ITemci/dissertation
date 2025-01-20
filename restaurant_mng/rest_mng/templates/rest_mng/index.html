@@ -145,20 +145,33 @@
     {% endfor %}
 
 
-<!-- Reservation form -->
-<h2>Make a Reservation</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.date }}
-    <label for="id_time">Time:</label>
-    <select id="id_time" name="time">
-      {% for value, label in form.fields.time.choices %}
-        <option value="{{ value }}">{{ label }}</option>
-      {% endfor %}
-    </select>
-    {{ form.num_tables }}
-    <button type="submit" class="btn btn-primary">Reserve</button>
-  </form>
+    {% if user.is_authenticated %}
+        <!-- Reservation  -->
+        <button id="res_btn">
+            <h5 style="margin:0px;">Make reservation</h5>
+        </button>
+        <div id="reservation_form">
+            <h2>Make a Reservation</h2>
+              <form method="post">
+                {% csrf_token %}
+                  <h5>Select date and time</h5>
+                {{ form.date }}
+                <label for="id_time">Time:</label>
+                <select id="id_time" name="time">
+                  {% for value, label in form.fields.time.choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+                  <br><br>
+                  <h5> Select amount of tables</h5>
+                {{ form.num_tables }}
+                <button type="submit" class="btn btn-primary" style="margin: 20px 0px;">Reserve</button>
+              </form>
+        </div>
+        {% endif %}
+
+
+
 
   <script>
     document.getElementById('id_date').addEventListener('change', function() {
@@ -196,6 +209,18 @@
 
     }
 
+</script>
+
+<script>
+    const res_btn = document.getElementById('res_btn');
+    const reservation = document.getElementById('reservation_form');
+    res_btn.addEventListener('click', ()=>{
+        reservation.classList.toggle("show");
+        // Scroll to the reservation when it becomes visible
+                if (reservation.classList.contains("show")) {
+                    reservation.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+    });
 </script>
 
 
