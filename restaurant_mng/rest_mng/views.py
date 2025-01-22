@@ -19,7 +19,6 @@ from django.db import models
 
 from .models import User,Product, Reviews,Sales, SalesItems, Reservation
 
-# Create your views here.
 def index(request):
     average_rating = Reviews.objects.aggregate(Avg('rating'))['rating__avg']
     form = ReservationForm()
